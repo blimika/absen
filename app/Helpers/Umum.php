@@ -43,13 +43,22 @@ class CommunityBPS
 		$username = str_replace("@bps.go.id","",$email);
 		$satuankerja = trim($this->get_string_between($result, 'Satuan Kerja</td><td width="2px" align="left" valign="top">:</td><td align="left">', '</td></tr>'));
 		$alamatkantor = trim($this->get_string_between($result, 'Alamat Kantor</td><td width="2px" align="left">:</td><td align="left">', '</td></tr>'));
-		
-		return $nama!='' ? array(
+		if ($satuankerja !="") {
+			$sat = \explode(" ",$satuankerja);
+			if ($sat[0]=='BPS' or $sat[0]=='Bagian' or $sat[0]=='Bidang') {
+				$jabatan = 'Kepala';
+			}
+			else {
+				$jabatan = '[Kepala/Staf]';
+			}
+		}
+		return $nama !='' ? array(
 			'nama'=>$nama,
 			'nipbps'=>$nipbps,
 			'nippanjang'=>$nippanjang,
 			'email'=>$email,
 			'username'=>$username,
+			'jabatan'=>$jabatan,
 			'satuankerja'=>$satuankerja,
 			'alamatkantor'=>$alamatkantor,
 			'urlfoto'=>$urlfoto
@@ -130,8 +139,14 @@ class CommunityBPS
 		foreach($listurlpegawai as $nip){
 			$getnip = substr($nip,-9);
 			
-			if($i==0){
-				$listpegawai[] = $this->getprofil($getnip);
+			if($i==0) {
+				if(substr($getnip, -7)=='0000000'){
+					$listpegawai[] = false;
+					$listpegawai[] = $this->get_sublist_pegawai_provinsi($nip);
+				}
+				else {
+					$listpegawai[] = $this->getprofil($getnip);
+				}
 			}else{
 				if(substr($getnip, -7)=='0000000'){
 					$listpegawai[] = $this->get_sublist_pegawai_provinsi($nip);
@@ -141,8 +156,8 @@ class CommunityBPS
 			$i++;
 		}
 		
-		//return count($listpegawai)>0 ? $listpegawai : false;
-		return $listurlpegawai;
+		return count($listpegawai)>0 ? $listpegawai : false;
+		//return $listurlpegawai;
 	}
 	
 	/**** 
@@ -313,7 +328,6 @@ class CommunityBPS
 				$attrs = $value->attributes; 
 				$listurlpegawai[]=substr($attrs->getNamedItem('href')->nodeValue, -9);
 			}
-
 		}
 		
 		// convert all ASN nip to arrays of profile

@@ -20,6 +20,7 @@ class DataPegawaiCommunity extends Migration
             $table->string('nipbaru',18)->unique();
             $table->string('email')->unique();
             $table->string('username')->unique();
+            $table->string('jabatan',20);
             $table->string('satuankerja');
             $table->string('urlfoto');
             $table->timestamps();
