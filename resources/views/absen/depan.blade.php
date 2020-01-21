@@ -23,7 +23,7 @@
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <div class="card card-primary card-outline">
                 <div class="card-header">
                   <h5 class="m-0">Presensi Hari {{Tanggal::HariPanjang(\Carbon\Carbon::now())}}</h5>
@@ -33,108 +33,72 @@
                   <table class="table table-striped table-valign-middle">
                     <thead>
                     <tr>
-                      <th>Nama</th>
-                      <th>Waktu Datang</th>
-                      <th>Ket Datang</th>
-                      <th>Waktu Pulang</th>
-                      <th>Ket Pulang</th>
+                      <th rowspan="2">Nama</th>
+                      <th colspan="2">Datang</th>
+                      <th colspan="2">Pulang</th>
+                    </tr>
+                    <tr>
+                      <th>Waktu</th>
+                      <th>Ket</th>
+                      <th>Waktu</th>
+                      <th>Ket</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>
-                        <img src="https://community.bps.go.id/images/avatar/340014129_20160718092456.jpg" alt="Product 1" class="img img-responsive full-width img-circle img-size-32 mr-2">
-                        Some Product
-                      </td>
-                      <td>$13 USD</td>
-                      <td>
-                        <small class="text-success mr-1">
-                          <i class="fas fa-arrow-up"></i>
-                          12%
-                        </small>
-                        12,000 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Another Product
-                      </td>
-                      <td>$29 USD</td>
-                      <td>
-                        <small class="text-warning mr-1">
-                          <i class="fas fa-arrow-down"></i>
-                          0.5%
-                        </small>
-                        123,234 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Amazing Product
-                      </td>
-                      <td>$1,230 USD</td>
-                      <td>
-                        <small class="text-danger mr-1">
-                          <i class="fas fa-arrow-down"></i>
-                          3%
-                        </small>
-                        198 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Perfect Item
-                        <span class="badge bg-danger">NEW</span>
-                      </td>
-                      <td>$199 USD</td>
-                      <td>
-                        <small class="text-success mr-1">
-                          <i class="fas fa-arrow-up"></i>
-                          63%
-                        </small>
-                        87 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
+                      @foreach ($dataAbsen as $item)
+                          <tr>
+                            <td><img src="{{$item->urlfoto}}" height="40px" width="40px" class="img img-responsive full-width img-circle mr-2">
+                              {{$item->nama}}</td>
+                            <td>@isset($item->masuk_waktu)
+                              {{Carbon\Carbon::parse($item->masuk_waktu)->format('H:i')}}
+                            @endisset
+                              </td>
+                            <td>
+                              @empty($item->masuk_waktu)
+                                  <small class="badge badge-warning">absen</small>
+                              @endempty
+                              @isset($item->masuk_waktu)
+                                @if (Carbon\Carbon::parse('07:30')->diffInMinutes(Carbon\Carbon::parse($item->masuk_waktu),false)>0)
+                                <small class="badge badge-danger">telat</small>
+                                @else 
+                                  <small class="badge badge-success"><i class="fas fa-thumbs-up"></i></small>
+                                @endif
+                              @endisset
+                            </td>
+                            <td>
+                              @isset($item->plg_waktu)
+                              {{Carbon\Carbon::parse($item->plg_waktu)->format('H:i')}}
+                              @endisset
+                            </td>
+                            <td>
+                              @empty($item->plg_waktu)
+                                  <small class="badge badge-warning">absen</small>
+                              @endempty
+                              @isset($item->plg_waktu)
+                                @if (Carbon\Carbon::parse('17:00')->diffInMinutes(Carbon\Carbon::parse($item->plg_waktu),false)<-60)
+                                <small class="badge badge-danger">cpt plg</small>
+                                @else 
+                                  <small class="badge badge-success"><i class="fas fa-thumbs-up"></i></small>
+                                @endif
+                              @endisset
+                            </td>
+                          </tr>
+                      @endforeach
                     </tbody>
                   </table>
-                  
-                  
-                </div>
+                  </div>
               </div>
         </div>
         <!-- /.col-md-6 -->
-        <div class="col-lg-6">
+        <div class="col-lg-4">
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h5 class="m-0">Belum presensi</h5>
+              <h5 class="m-0">Update Data</h5>
             </div>
             <div class="card-body">
-              <h6 class="card-title">Special title treatment</h6>
+              <h6 class="card-title">Penarikan log mesin terakhir</h6>
 
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text"><span class="badge badge-primary">{{$dataLog->created_at->diffForHumans()}}</span></p>
               
             </div>
           </div>

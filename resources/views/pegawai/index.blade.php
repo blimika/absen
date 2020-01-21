@@ -49,7 +49,7 @@
         <h3 class="card-title">Data Pegawai Terkini (sesuai Community BPS)</h3>
 
         <div class="card-tools"> 
-            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#TambahModal"><i class="fa fa-plus-circle"></i> TAMBAH MITRA</button>
+           <!-- <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#TambahModal"><i class="fa fa-plus-circle"></i> TAMBAH MITRA</button>-->
           <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
             <i class="fas fa-minus"></i></button>
           
