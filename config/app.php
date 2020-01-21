@@ -229,6 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'CommunityBPS' => App\Helpers\CommunityBPS::class,
         'AmbilLogAbsen' => App\Helpers\AmbilLogAbsen::class,
+        'Tanggal' => App\Helpers\Tanggal::class,
 
     ],
 

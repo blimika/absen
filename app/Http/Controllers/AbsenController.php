@@ -5,9 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\AmbilLogAbsen;
 use App\LogAbsen;
+use App\TarikLog;
+use Illuminate\Support\Facades\DB;
 class AbsenController extends Controller
 {
     //
+    public function depan()
+    {
+        //
+        $today = date('Y-m-d');
+        /*
+        select * from (select * from logabsen WHERE logabsen.absen_tgl='2020-01-21' GROUP by absen_id,absen_kode) as absen RIGHT JOIN t_pegawai on t_pegawai.absen_id = absen.absen_id ORDER by absen.absen_waktu DESC
+        */
+        $dataAbsen = DB::table('logabsen')->where('absen_tgl','=',$today)->get();
+        //dd($dataAbsen);
+        return view('absen.depan',['dataAbsen'=>$dataAbsen]);
+    }
+    public function index()
+    {
+        //
+        $dataAbsen = LogAbsen::with('AbsenKode')->get();
+        //dd($dataAbsen);
+        return view('absen.index',['dataAbsen'=>$dataAbsen]);
+    }
     public function getabsen()
     {
         //
@@ -50,6 +70,10 @@ class AbsenController extends Controller
             $pesan_error='Data tidak tersedia';
             $pesan_status=false;
         }
+        $dataLog = new TarikLog();
+        $dataLog -> pesan = $pesan_error;
+        $dataLog -> status = $pesan_status;
+        $dataLog -> save();
         $arr = array('data'=>$pesan_error,'status'=>$pesan_status);
         return Response()->json($arr);
     }

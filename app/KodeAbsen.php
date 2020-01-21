@@ -8,7 +8,7 @@ class KodeAbsen extends Model
 {
     //
     protected $table = 't_kodeabsen';
-    public function KodeAbsen()
+    public function AbsenKode()
     {
         return $this->belongsTo('App\LogAbsen', 'absen_kode', 'kode_id');
     }
