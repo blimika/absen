@@ -16,6 +16,8 @@ class TPegawaiController extends Controller
     public function index()
     {
         //
+        $dataPegawai = tPegawai::all();
+        return view('pegawai.index',['dataPegawai'=>$dataPegawai]);
     }
 
     /**
@@ -72,7 +74,22 @@ class TPegawaiController extends Controller
     {
         //
     }
-
+    public function simpan(Request $request)
+    {
+        //
+        //dd($request->all());
+        $dataPeg = new tPegawai();
+        $dataPeg->nama = $request->nama;
+        $dataPeg->absen_id = $request->absen_id;
+        $dataPeg->jk = $request->jk;
+        $dataPeg->nipbps = $request->absen_id;
+        $dataPeg->nipbaru=$request->absen_id;
+        $dataPeg->jabatan = 'Honorer';
+        $dataPeg->satuankerja = 'Subbagian Umum';
+        $dataPeg->urlfoto = 'https://via.placeholder.com/100x100';
+        $dataPeg->save();
+        return back();
+    }
     public function sync($kodeprov)
     {
         //
@@ -110,6 +127,9 @@ class TPegawaiController extends Controller
                             $data->jabatan = $hasil[0]['jabatan'];
                             $data->satuankerja = $hasil[0]['satuankerja'];
                             $data->urlfoto = $hasil[0]['urlfoto'];
+                            $data->jk = substr($hasil[0]['nippanjang'],-4,1);
+                            $data->absen_id = intval(substr($hasil[0]['nipbps'],-5));
+                            $data->pegawaihonor = true;
                             $data->save();
                             $tot++;
                         }                
@@ -143,6 +163,9 @@ class TPegawaiController extends Controller
                                 $data->jabatan = $hasil[$i][$j]['jabatan'];
                                 $data->satuankerja = $hasil[$i][$j]['satuankerja'];
                                 $data->urlfoto = $hasil[$i][$j]['urlfoto'];
+                                $data->jk = substr($hasil[$i][$j]['nippanjang'],-4,1);
+                                $data->absen_id = intval(substr($hasil[$i][$j]['nipbps'],-5));
+                                $data->pegawaihonor = true;
                                 $data->save();
                                 $tot++;
                             }   
