@@ -24,7 +24,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
+          <li class="nav-item">
             <a href="{{route('pegawai.list')}}" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Data Pegawai
@@ -37,6 +37,15 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Log Mesin
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('absen.presensi','')}}" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Presensi Pegawai
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>

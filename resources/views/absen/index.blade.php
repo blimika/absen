@@ -55,8 +55,8 @@
             <i class="fas fa-times"></i></button>
         </div>
       </div>
-      <div class="card-body">
-        <table id="absen" class="table table-bordered table-striped">
+      <div class="card-body col-sm-12">
+        <table id="absen" class="table table-responsive table-bordered table-striped">
             <thead>
             <tr>
               <th>No</th>
@@ -78,7 +78,19 @@
                         <td>{{$item->absen_nama}}</td>
                         <td>{{$item->absen_tgl}}</td>
                         <td>{{$item->absen_waktu}}</td>
-                        <td>{{$item->AbsenKode->kode_nama}}</td>
+                        <td>
+                          @if ($item->absen_kode == 0)
+                           <span class="badge badge-success">{{$item->AbsenKode->kode_nama}}</span>
+                          @elseif ($item->absen_kode ==1)
+                          <span class="badge badge-danger">{{$item->AbsenKode->kode_nama}}</span>
+                          @elseif ($item->absen_kode == 4)
+                          <span class="badge badge-primary">{{$item->AbsenKode->kode_nama}}</span>
+                          @elseif ($item->absen_kode == 5)
+                          <span class="badge badge-info">{{$item->AbsenKode->kode_nama}}</span>
+                          @else 
+                          <span class="badge badge-warning">{{$item->AbsenKode->kode_nama}}</span>
+                          @endif
+                          </td>
                       </tr>
                     @endforeach
                 @endif
