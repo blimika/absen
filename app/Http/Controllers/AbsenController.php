@@ -8,6 +8,7 @@ use App\LogAbsen;
 use App\TarikLog;
 use Illuminate\Support\Facades\DB;
 use Session;
+use Carbon\Carbon;
 class AbsenController extends Controller
 {
     //
@@ -27,6 +28,35 @@ class AbsenController extends Controller
         //dd($dataAbsen);
         $dataLog = TarikLog::orderBy('created_at','desc')->first();
         return view('absen.depan',['dataAbsen'=>$dataAbsen,'dataLog'=>$dataLog]);
+    }
+    public function presensi($tanggal)
+    {
+        //
+        if ($tanggal!=0) {
+            if (Carbon::parse($tanggal) > Carbon::today())
+            {
+                $today = date('Y-m-d');
+            }
+            else {
+                $today = $tanggal;
+            }
+           
+        }
+        else {
+            $today = date('Y-m-d');
+        }
+        //$today = '2020-01-21';
+        /*
+        select * from t_pegawai LEFT join (SELECT log_id as m_id, absen_id as masuk_id, absen_tgl as masuk_tgl, absen_waktu as masuk_waktu from logabsen where logabsen.absen_tgl='2020-01-21' and logabsen.absen_kode=0 GROUP by absen_id,absen_kode) as masuk on t_pegawai.absen_id=masuk.masuk_id left join (SELECT log_id as p_id, absen_id as plg_id, absen_tgl as plg_tgl, absen_waktu as plg_waktu from logabsen where logabsen.absen_tgl='2020-01-21' and logabsen.absen_kode=1 GROUP by absen_id,absen_kode) as pulang on t_pegawai.absen_id=pulang.plg_id order by masuk.masuk_waktu DESC
+        */
+        $dataAbsen = DB::table('t_pegawai')
+                            ->leftJoin(\DB::Raw("(select log_id as m_id,absen_id as masuk_id, absen_tgl as masuk_tgl, absen_waktu as masuk_waktu from logabsen where absen_tgl='$today' and logabsen.absen_kode=0 group by absen_id,absen_kode) as masuk"),'t_pegawai.absen_id','=','masuk.masuk_id')
+                            ->leftJoin(\DB::Raw("(SELECT log_id as p_id, absen_id as plg_id, absen_tgl as plg_tgl, absen_waktu as plg_waktu from logabsen where logabsen.absen_tgl='$today' and logabsen.absen_kode=1 GROUP by absen_id,absen_kode) as pulang"),'t_pegawai.absen_id','=','pulang.plg_id')
+                            ->where('t_pegawai.aktif','=',1)
+                            ->orderBy('masuk.masuk_waktu','desc')->get();
+        //dd($dataAbsen);
+        $dataLog = TarikLog::orderBy('created_at','desc')->first();
+        return view('absen.presensi',['dataAbsen'=>$dataAbsen,'dataLog'=>$dataLog,'hari_tanggal'=>$today]);
     }
     public function index()
     {
