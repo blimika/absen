@@ -20,10 +20,15 @@
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <h5 class="m-0"> <span><a href="#" class="btn btn-primary"><i class="fas fa-angle-left"></i></a><span> Hari {{Tanggal::HariPanjang(\Carbon\Carbon::now())}} <span><a href="{{Carbon\Carbon::parse($hari_tanggal)->format('Y-m-d')}}" class="btn btn-primary"><i class="fas fa-angle-right"></i></a><span></h5>
+                  <h5 class="m-0"> 
+                    <span><a href="{{route('absen.presensi',$tgl_prev)}}" class="btn btn-primary"><i class="fas fa-angle-left"></i></a></span> 
+                    Hari {{Tanggal::HariPanjang(\Carbon\Carbon::parse($hari_tanggal))}} 
+                    <span><a href="{{route('absen.presensi',$tgl_next)}}" class="btn btn-primary"><i class="fas fa-angle-right"></i></a><span>
+
+                    </h5>
                 </div>
                 <div class="card-body table-responsive p-0">
                  
@@ -33,8 +38,14 @@
                       <th rowspan="2">Nama</th>
                       <th colspan="2">Datang</th>
                       <th colspan="2">Pulang</th>
+                      <th colspan="2">Lembur Masuk</th>
+                      <th colspan="2">Lembur Pulang</th>
                     </tr>
                     <tr>
+                      <th>Waktu</th>
+                      <th>Ket</th>
+                      <th>Waktu</th>
+                      <th>Ket</th>
                       <th>Waktu</th>
                       <th>Ket</th>
                       <th>Waktu</th>
@@ -79,6 +90,29 @@
                                 @endif
                               @endisset
                             </td>
+                            <td>@isset($item->lbrmsk_waktu)
+                              {{Carbon\Carbon::parse($item->lbrmsk_waktu)->format('H:i')}}
+                              @endisset
+                            </td>
+                            <td>
+                              @empty($item->lbrmsk_waktu)
+                                  <small class="badge badge-warning">absen</small>
+                              @endempty
+                              @isset($item->lbrmsk_waktu)
+                              <small class="badge badge-primary">lembur</small>
+                              @endisset
+                            </td>
+                            <td>@isset($item->lbrplg_waktu)
+                              {{Carbon\Carbon::parse($item->lbrplg_waktu)->format('H:i')}}
+                              @endisset</td>
+                            <td>
+                              @empty($item->lbrplg_waktu)
+                              <small class="badge badge-warning">absen</small>
+                              @endempty
+                              @isset($item->lbrplg_waktu)
+                              <small class="badge badge-primary">lembur</small>
+                              @endisset
+                            </td>
                           </tr>
                       @endforeach
                     </tbody>
@@ -87,19 +121,7 @@
               </div>
         </div>
         <!-- /.col-md-6 -->
-        <div class="col-lg-4">
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h5 class="m-0">Update Data</h5>
-            </div>
-            <div class="card-body">
-              <h6 class="card-title">Penarikan log mesin terakhir</h6>
-
-              <p class="card-text"><span class="badge badge-primary">{{$dataLog->created_at->diffForHumans()}}</span></p>
-              
-            </div>
-          </div>
-        </div>
+        
         <!-- /.col-md-6 -->
       </div>
       <!-- /.row -->

@@ -33,30 +33,37 @@ class AbsenController extends Controller
     {
         //
         if ($tanggal!=0) {
-            if (Carbon::parse($tanggal) > Carbon::today())
+            if (Carbon::parse($tanggal) >= Carbon::today())
             {
                 $today = date('Y-m-d');
+                $next = $today;
             }
             else {
                 $today = $tanggal;
+                $next = Carbon::parse($today)->addDay();
             }
            
         }
         else {
             $today = date('Y-m-d');
+            $next = $today;
         }
         //$today = '2020-01-21';
         /*
         select * from t_pegawai LEFT join (SELECT log_id as m_id, absen_id as masuk_id, absen_tgl as masuk_tgl, absen_waktu as masuk_waktu from logabsen where logabsen.absen_tgl='2020-01-21' and logabsen.absen_kode=0 GROUP by absen_id,absen_kode) as masuk on t_pegawai.absen_id=masuk.masuk_id left join (SELECT log_id as p_id, absen_id as plg_id, absen_tgl as plg_tgl, absen_waktu as plg_waktu from logabsen where logabsen.absen_tgl='2020-01-21' and logabsen.absen_kode=1 GROUP by absen_id,absen_kode) as pulang on t_pegawai.absen_id=pulang.plg_id order by masuk.masuk_waktu DESC
         */
+        $tgl_prev = Carbon::parse($today)->subDay()->format('Y-m-d');
+        $tgl_next = Carbon::parse($next)->format('Y-m-d');
         $dataAbsen = DB::table('t_pegawai')
                             ->leftJoin(\DB::Raw("(select log_id as m_id,absen_id as masuk_id, absen_tgl as masuk_tgl, absen_waktu as masuk_waktu from logabsen where absen_tgl='$today' and logabsen.absen_kode=0 group by absen_id,absen_kode) as masuk"),'t_pegawai.absen_id','=','masuk.masuk_id')
                             ->leftJoin(\DB::Raw("(SELECT log_id as p_id, absen_id as plg_id, absen_tgl as plg_tgl, absen_waktu as plg_waktu from logabsen where logabsen.absen_tgl='$today' and logabsen.absen_kode=1 GROUP by absen_id,absen_kode) as pulang"),'t_pegawai.absen_id','=','pulang.plg_id')
+                            ->leftJoin(\DB::Raw("(SELECT log_id as lm_id, absen_id as lbrmsk_id, absen_tgl as lbrmsk_tgl, absen_waktu as lbrmsk_waktu from logabsen where logabsen.absen_tgl='$today' and logabsen.absen_kode=4 GROUP by absen_id,absen_kode) as lbrmsk"),'t_pegawai.absen_id','=','lbrmsk.lbrmsk_id')
+                            ->leftJoin(\DB::Raw("(SELECT log_id as lp_id, absen_id as lbrplg_id, absen_tgl as lbrplg_tgl, absen_waktu as lbrplg_waktu from logabsen where logabsen.absen_tgl='$today' and logabsen.absen_kode=5 GROUP by absen_id,absen_kode) as lbrplg"),'t_pegawai.absen_id','=','lbrplg.lbrplg_id')
                             ->where('t_pegawai.aktif','=',1)
                             ->orderBy('masuk.masuk_waktu','desc')->get();
         //dd($dataAbsen);
         $dataLog = TarikLog::orderBy('created_at','desc')->first();
-        return view('absen.presensi',['dataAbsen'=>$dataAbsen,'dataLog'=>$dataLog,'hari_tanggal'=>$today]);
+        return view('absen.presensi',['dataAbsen'=>$dataAbsen,'dataLog'=>$dataLog,'hari_tanggal'=>$today,'tgl_prev'=>$tgl_prev,'tgl_next'=>$tgl_next]);
     }
     public function index()
     {
