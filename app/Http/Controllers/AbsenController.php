@@ -7,6 +7,7 @@ use App\Helpers\AmbilLogAbsen;
 use App\LogAbsen;
 use App\TarikLog;
 use Illuminate\Support\Facades\DB;
+use Session;
 class AbsenController extends Controller
 {
     //
@@ -33,6 +34,10 @@ class AbsenController extends Controller
         $dataAbsen = LogAbsen::with('AbsenKode')->get();
         //dd($dataAbsen);
         return view('absen.index',['dataAbsen'=>$dataAbsen]);
+    }
+    public function getdata()
+    {
+        return view('absen.getdata');
     }
     public function getabsen()
     {
@@ -86,6 +91,51 @@ class AbsenController extends Controller
 
     public function AmbilData(Request $request)
     {
-
+        //
+        $h = new AmbilLogAbsen();
+        //$hasil = AmbilLogAbsen->hari_ini();
+        $hasil = $h -> getdata($request->tanggal_awal,$request->tanggal_akhir);
+        //dd($hasil);
+        //dd($request->all());
+        if ($hasil['status'] == true) 
+        {
+            //input ke database
+            /*
+            $arrData[] = array(
+						 'absen_id' => $isi[0],
+						 'absen_nama' => $isi[1],
+						 'absen_tgl' => $tgl[0],
+						 'absen_waktu' => $tgl[1],
+						 'absen_kode'=> intval($isi[4])
+					 );
+            */
+            foreach($hasil['data'] as $r)
+            {
+                $count = LogAbsen::where([['absen_id','=',$r['absen_id']],['absen_nama','=',$r['absen_nama']],['absen_tgl','=',$r['absen_tgl']],['absen_waktu','=',$r['absen_waktu']],['absen_kode','=',$r['absen_kode']]])->count();
+                if ($count>0) {
+                    //sudah di input
+                }
+                else {
+                    //input ke database;
+                    $data = new LogAbsen();
+                    $data->absen_id = $r['absen_id'];
+                    $data->absen_nama = $r['absen_nama'];
+                    $data->absen_tgl = $r['absen_tgl'];
+                    $data->absen_waktu = $r['absen_waktu'];
+                    $data->absen_kode = $r['absen_kode'];
+                    $data->save();
+                }
+            }
+            $pesan_error = 'Data log sebanyak '. $hasil['jumlah_data'] .' sudah diproses';
+            $pesan_status = 'success';
+        }
+        else {
+            $pesan_error='Data tidak tersedia';
+            $pesan_status='error';
+        }
+        $arr = array('data'=>$pesan_error,'status'=>$pesan_status);
+        Session::flash('message', $pesan_error);
+        Session::flash('alert-type', $pesan_status);
+        return back();
     }
 }
