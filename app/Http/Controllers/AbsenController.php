@@ -68,7 +68,7 @@ class AbsenController extends Controller
     public function index()
     {
         //
-        $dataAbsen = LogAbsen::with('AbsenKode')->orderBy('absen_tgl,absen_waktu','desc')->get();
+        $dataAbsen = LogAbsen::with('AbsenKode')->orderBy('absen_tgl','desc')->orderBy('absen_waktu','asc')->get();
         //dd($dataAbsen);
         return view('absen.index',['dataAbsen'=>$dataAbsen]);
     }
