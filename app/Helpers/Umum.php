@@ -525,7 +525,7 @@ class Tanggal {
 	    return $tanggal;
     }
 }
-class CekHadir
+class CekAbsen
 {
 	/*
 	TL1 : 1 detik > jam masuk <= 30 menit
@@ -540,5 +540,16 @@ class CekHadir
 	public static function Pulang($tgl,$jam_absen, $pola_absen)
 	{
 
+	}
+}
+Class Generate {
+    public static function Kode($length) {
+        $kata='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $code_gen = '';
+        for ($i = 0; $i < $length; $i++) {
+            $pos = rand(0, strlen($kata)-1);
+            $code_gen .= $kata{$pos};
+            }
+        return $code_gen;
 	}
 }

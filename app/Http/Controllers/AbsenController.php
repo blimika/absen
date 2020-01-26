@@ -9,6 +9,8 @@ use App\TarikLog;
 use Illuminate\Support\Facades\DB;
 use Session;
 use Carbon\Carbon;
+use App\Helpers\Generate;
+use App\Helpers\CekAbsen;
 class AbsenController extends Controller
 {
     //
@@ -28,6 +30,11 @@ class AbsenController extends Controller
         //dd($dataAbsen);
         $dataLog = TarikLog::orderBy('created_at','desc')->first();
         return view('absen.depan',['dataAbsen'=>$dataAbsen,'dataLog'=>$dataLog]);
+    }
+    public function PolaKerja()
+    {
+        $kode = Generate::kode(4);
+        dd($kode);
     }
     public function presensi($tanggal)
     {
