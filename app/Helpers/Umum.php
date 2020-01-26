@@ -525,3 +525,20 @@ class Tanggal {
 	    return $tanggal;
     }
 }
+class CekHadir
+{
+	/*
+	TL1 : 1 detik > jam masuk <= 30 menit
+	TL2 : 30 mnt > jam masuk <= 60 mnt
+	TL3 : 60 menit > jam masuk <= 90 menit
+	TL4 : > 90 menit
+	*/
+	public static function Datang($tgl, $jam_absen, $pola_absen)
+	{
+
+	}
+	public static function Pulang($tgl,$jam_absen, $pola_absen)
+	{
+
+	}
+}
