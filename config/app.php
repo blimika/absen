@@ -230,7 +230,8 @@ return [
         'CommunityBPS' => App\Helpers\CommunityBPS::class,
         'AmbilLogAbsen' => App\Helpers\AmbilLogAbsen::class,
         'Tanggal' => App\Helpers\Tanggal::class,
-
+        'CekAbsen' => App\Helpers\CekAbsen::class,
+        'Generate' => App\Helpers\Generate::class,
     ],
 
 ];

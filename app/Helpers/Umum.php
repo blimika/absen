@@ -525,3 +525,31 @@ class Tanggal {
 	    return $tanggal;
     }
 }
+class CekAbsen
+{
+	/*
+	TL1 : 1 detik > jam masuk <= 30 menit
+	TL2 : 30 mnt > jam masuk <= 60 mnt
+	TL3 : 60 menit > jam masuk <= 90 menit
+	TL4 : > 90 menit
+	*/
+	public static function Datang($tgl, $jam_absen, $pola_absen)
+	{
+
+	}
+	public static function Pulang($tgl,$jam_absen, $pola_absen)
+	{
+
+	}
+}
+Class Generate {
+    public static function Kode($length) {
+        $kata='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $code_gen = '';
+        for ($i = 0; $i < $length; $i++) {
+            $pos = rand(0, strlen($kata)-1);
+            $code_gen .= $kata{$pos};
+            }
+        return $code_gen;
+	}
+}

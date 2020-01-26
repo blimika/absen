@@ -30,3 +30,5 @@ Route::get('/absen/pegawai/{tanggal?}', function($tanggal=0) {
     $ctrl = new \App\Http\Controllers\AbsenController();
     return $ctrl->presensi($tanggal);
 })->name('absen.presensi');
+Route::get('/absen/pola','AbsenController@PolaKerja')->name('absen.pola');
+Route::post('/absen/simpanpola','AbsenController@SimpanPolaKerja')->name('absen.simpanpola');
