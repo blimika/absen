@@ -13,11 +13,9 @@ class PolaKerja extends Migration
      */
     public function up()
     {
-        Schema::create('pola_kerja', function (Blueprint $table) {
+        Schema::create('t_polakerja', function (Blueprint $table) {
             $table->bigIncrements('pola_id');
-            $table->string('pola_kode',4);
             $table->string('pola_nama',150);
-            $table->string('pola_hari',20);
             $table->time('pola_dtg');
             $table->time('pola_plg');
             $table->boolean('pola_status')->default(1);
@@ -32,6 +30,6 @@ class PolaKerja extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pola_kerja');
+        Schema::dropIfExists('t_polakerja');
     }
 }

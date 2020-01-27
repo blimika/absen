@@ -104,8 +104,18 @@ class TPegawaiController extends Controller
                 if ($i==0) {
                     //pasti kepala
                     if ($hasil[0]!=false) {
+                        //cek kepala bps ada atau tidak
                         $count_peg = tPegawai::where('nipbps','=',$hasil[0]['nipbps'])->count();
-                        if ($count_peg<1) {
+                        if ($count_peg>0) {
+                            //jika sudah ada update isiannya nama, satuan, urlfoto
+                            $data = tPegawai::where('nipbps','=',$hasil[$i][$j]['nipbps'])->first();
+                            $data->nama = $hasil[$i][$j]['nama'];
+                            $data->satuankerja = $hasil[$i][$j]['satuankerja'];
+                            $data->urlfoto = $hasil[$i][$j]['urlfoto'];
+                            $data->update();
+                            $tot++;
+                        }
+                        else {
                             //belum ada
                             /*
                             'nama'=>$nama,
@@ -132,8 +142,7 @@ class TPegawaiController extends Controller
                             $data->pegawaihonor = true;
                             $data->save();
                             $tot++;
-                        }                
-                        
+                        }                 
                     }
                 }
                 else {
@@ -141,7 +150,16 @@ class TPegawaiController extends Controller
                     for ($j=0;$j<count($hasil[$i]);$j++)
                         {
                             $count_peg = tPegawai::where('nipbps','=',$hasil[$i][$j]['nipbps'])->count();
-                            if ($count_peg<1) {
+                            if ($count_peg>0) {
+                                //jika sudah ada update isiannya nama, satuan, urlfoto
+                                $data = tPegawai::where('nipbps','=',$hasil[$i][$j]['nipbps'])->first();
+                                $data->nama = $hasil[$i][$j]['nama'];
+                                $data->satuankerja = $hasil[$i][$j]['satuankerja'];
+                                $data->urlfoto = $hasil[$i][$j]['urlfoto'];
+                                $data->update();
+                                $tot++;
+                            }
+                            else {
                                 //belum ada
                                 /*
                                 'nama'=>$nama,

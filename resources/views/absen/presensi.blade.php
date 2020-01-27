@@ -65,13 +65,14 @@
                               @empty($item->masuk_waktu)
                                   <small class="badge badge-warning">absen</small>
                               @endempty
-                              @isset($item->masuk_waktu)
-                                @if (Carbon\Carbon::parse('07:30')->diffInMinutes(Carbon\Carbon::parse($item->masuk_waktu),false)>0)
-                                <small class="badge badge-danger">telat</small>
+                              @if ($item->masuk_waktu and $item->pegawaihonor==1)
+                                @php $m = CekAbsen::Datang($item->masuk_waktu,'07:30'); @endphp
+                                @if ($m['tl']>0)
+                                  <small class="badge badge-danger">TL{{$m['tl']}}</small>
                                 @else 
                                   <small class="badge badge-success"><i class="fas fa-thumbs-up"></i></small>
                                 @endif
-                              @endisset
+                              @endif
                             </td>
                             <td>
                               @isset($item->plg_waktu)

@@ -533,11 +533,41 @@ class CekAbsen
 	TL3 : 60 menit > jam masuk <= 90 menit
 	TL4 : > 90 menit
 	*/
-	public static function Datang($tgl, $jam_absen, $pola_absen)
+	public static function Datang($jam_absen, $jam_jadwal)
 	{
-
+		$waktu = \Carbon\Carbon::parse($jam_jadwal)->diffInMinutes(\Carbon\Carbon::parse($jam_absen),false);
+		if ($waktu > 0 and $waktu <= 30)
+		{
+			//tl1
+			$tl=1;
+			$warna = 'badge-danger';
+		}
+		elseif ($waktu>30 and $waktu<=60) {
+			$tl=2;
+			$warna = 'badge-danger';
+		}
+		elseif ($waktu>60 and $waktu<=90)
+		{
+			$tl=3;
+			$warna = 'badge-danger';
+		}
+		elseif ($waktu>90)
+		{
+			$tl=4;
+			$warna = 'badge-danger';
+		}
+		else {
+			$tl=0;
+			$warna='badge-success';
+		}
+		$arr = array(
+			'tl'=> $tl,
+			'waktu'=> $waktu,
+			'warna'=> $warna,
+		);
+		return $arr;
 	}
-	public static function Pulang($tgl,$jam_absen, $pola_absen)
+	public static function Pulang($jam_absen, $jam_jadwal)
 	{
 
 	}

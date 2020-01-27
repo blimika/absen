@@ -33,8 +33,10 @@ class AbsenController extends Controller
     }
     public function PolaKerja()
     {
-        $kode = Generate::kode(4);
-        dd($kode);
+        //$kode = Generate::kode(4);
+        $kode=CekAbsen::Datang('07:31:12','07:30:01');
+        //dd($kode);
+        return view('absen.pola');
     }
     public function presensi($tanggal)
     {
