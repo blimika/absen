@@ -19,7 +19,7 @@ class JadwalKerjaPegawai extends Migration
             $table->string('kerja_nipbps',9)->nullable();
             $table->string('kerja_nipbaru',18)->nullable();
             $table->date('kerja_tgl');
-            $table->int('kerja_kode',3)->default(1);
+            $table->integer('kerja_kode')->unsigned()->default(1);
             $table->time('jadwal_datang');
             $table->time('jadwal_pulang');
             $table->time('jadwal_lembur_datang')->nullable();

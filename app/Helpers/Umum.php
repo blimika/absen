@@ -569,7 +569,37 @@ class CekAbsen
 	}
 	public static function Pulang($jam_absen, $jam_jadwal)
 	{
-
+		$waktu = \Carbon\Carbon::parse($jam_jadwal)->diffInMinutes(\Carbon\Carbon::parse($jam_absen),false);
+		if ($waktu < 0 and $waktu >= -30)
+		{
+			//psw1
+			$psw=1;
+			$warna = 'badge-danger';
+		}
+		elseif ($waktu <-30 and $waktu >=-60) {
+			$psw=2;
+			$warna = 'badge-danger';
+		}
+		elseif ($waktu <-60 and $waktu>=-90)
+		{
+			$psw=3;
+			$warna = 'badge-danger';
+		}
+		elseif ($waktu < -90)
+		{
+			$psw=4;
+			$warna = 'badge-danger';
+		}
+		else {
+			$psw=0;
+			$warna='badge-success';
+		}
+		$arr = array(
+			'psw'=> $psw,
+			'waktu'=> $waktu,
+			'warna'=> $warna,
+		);
+		return $arr;
 	}
 }
 Class Generate {
