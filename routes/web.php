@@ -31,4 +31,7 @@ Route::get('/absen/pegawai/{tanggal?}', function($tanggal=0) {
     return $ctrl->presensi($tanggal);
 })->name('absen.presensi');
 Route::get('/absen/pola','AbsenController@PolaKerja')->name('absen.pola');
+Route::get('/rekap/list','RekapController@RekapList')->name('rekap.list');
+Route::get('/tanggal/list','RekapController@tanggalList')->name('tanggal.list');
+Route::get('/tanggal/buat/{tahun}/{bulan}','RekapController@tanggalBuat')->name('tanggal.buat');
 Route::post('/absen/simpanpola','AbsenController@SimpanPolaKerja')->name('absen.simpanpola');

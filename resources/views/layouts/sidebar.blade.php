@@ -25,7 +25,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="{{route('pegawai.list')}}" class="nav-link active">
+            <a href="{{route('pegawai.list')}}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Data Pegawai
               </p>
@@ -46,6 +46,15 @@
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Presensi Pegawai
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('rekap.list')}}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Rekap Absen
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
